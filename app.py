@@ -11,7 +11,7 @@ def get_logo_url(domain, api_key):
 @app.route('/')
 def home():
     # Elenco di tutte le aziende
-    companies = ['AMGN', 'GILD', 'BIIB', 'VRTX', 'REGN', 'AAPL', 'MSFT', 'GOOGL']  # Esempi di ticker per aziende
+    companies = ['AMGN', 'GILD', 'BIIB', 'VRTX', 'REGN', 'AAPL', 'MSFT', 'GOOG']  # Esempi di ticker per aziende
     api_key = 'pk_Bk503VYEQsGdMJeFjmqxDA'
     
     # Convert stock tickers to website domains
