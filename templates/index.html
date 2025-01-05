@@ -30,6 +30,10 @@
         tr:hover {
             background-color: #f1f1f1;
         }
+        td img {
+            display: block;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
@@ -43,6 +47,7 @@
                 <th>Name</th>
                 <th>Price</th>
                 <th>Market Cap</th>
+                <th>3-Months Trend</th>
             </tr>
         </thead>
         <tbody>
@@ -53,6 +58,7 @@
                     <td>{{ company_data['info']['shortName'] }} ({{ symbol }})</td>
                     <td>${{ company_data['info']['currentPrice'] }}</td>
                     <td>${{ company_data['info']['marketCap'] | round(0, 'common') }}</td>
+                    <td><img src="data:image/png;base64,{{ company_data['plot'] }}" alt="Stock Trend" width="100"></td>
                 </tr>
             {% endfor %}
         </tbody>
