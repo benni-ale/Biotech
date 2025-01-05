@@ -1,13 +1,24 @@
+import requests
+from io import BytesIO
 from flask import Flask, render_template
 import yfinance as yf
 
 app = Flask(__name__)
 
+def get_logo_url(domain, api_key):
+    return f'https://img.logo.dev/{domain}?token={api_key}'
+
 @app.route('/')
 def home():
     # Elenco di tutte le aziende
     companies = ['AMGN', 'GILD', 'BIIB', 'VRTX', 'REGN', 'AAPL', 'MSFT', 'GOOGL']  # Esempi di ticker per aziende
-    data = {company: yf.Ticker(company).info for company in companies}
+    api_key = 'pk_Bk503VYEQsGdMJeFjmqxDA'
+    data = {
+        company: {
+            'info': yf.Ticker(company).info,
+            'logo_url': get_logo_url(f'{company.lower()}.com', api_key)
+        } for company in companies
+    }
     return render_template('index.html', data=data)
 
 @app.route('/biotech')
