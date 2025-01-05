@@ -4,14 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Flask App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
 </head>
 <body>
     <h1>Welcome to My Flask App!</h1>
-    <h2>List of Companies</h2>
-    <ul>
-        {% for symbol, info in data.items() %}
-            <li>{{ symbol }}: {{ info['shortName'] }} - Price: {{ info['currentPrice'] }} - Market Cap: {{ info['marketCap'] | round(0, 'common') }}</li>
-        {% endfor %}
-    </ul>
+    <h2>List of Biotech Companies</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Market Cap</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for symbol, info in data.items() %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ info['shortName'] }} ({{ symbol }})</td>
+                    <td>${{ info['currentPrice'] }}</td>
+                    <td>${{ info['marketCap'] | round(0, 'common') }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html> 
