@@ -8,7 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            background-color: #f4f4f4;
+            background-color: #ffffff;
         }
         h1, h2 {
             color: #333;
@@ -28,7 +28,7 @@
             color: white;
         }
         tr:hover {
-            background-color: #f1f1f1;
+            background-color: #ffffff;
         }
         td img {
             display: block;
@@ -39,6 +39,15 @@
 <body>
     <h1>Welcome to My Flask App!</h1>
     <h2>List of Companies</h2>
+    
+    <!-- Added dropdown for sorting -->
+    <label for="sort">Sort by:</label>
+    <select id="sort" onchange="sortTable()">
+        <option value="name">Name</option>
+        <option value="price">Price</option>
+        <option value="marketCap">Market Cap</option>
+    </select>
+
     <table>
         <thead>
             <tr>
@@ -50,7 +59,7 @@
                 <th>3-Months Trend</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="companyTable">
             {% for symbol, company_data in data.items() %}
                 <tr>
                     <td>{{ loop.index }}</td>
@@ -63,5 +72,23 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <script>
+        function sortTable() {
+            const table = document.getElementById("companyTable");
+            const rows = Array.from(table.rows);
+            const sortBy = document.getElementById("sort").value;
+
+            rows.sort((a, b) => {
+                const aValue = sortBy === 'name' ? a.cells[2].innerText : (sortBy === 'price' ? parseFloat(a.cells[3].innerText.replace('$', '')) : parseFloat(a.cells[4].innerText.replace('$', '').replace(/,/g, '')));
+                const bValue = sortBy === 'name' ? b.cells[2].innerText : (sortBy === 'price' ? parseFloat(b.cells[3].innerText.replace('$', '')) : parseFloat(b.cells[4].innerText.replace('$', '').replace(/,/g, '')));
+                return aValue > bValue ? 1 : -1;
+            });
+
+            // Clear the table and append sorted rows
+            table.innerHTML = '';
+            rows.forEach(row => table.appendChild(row));
+        }
+    </script>
 </body>
 </html> 
