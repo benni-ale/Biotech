@@ -13,10 +13,14 @@ def home():
     # Elenco di tutte le aziende
     companies = ['AMGN', 'GILD', 'BIIB', 'VRTX', 'REGN', 'AAPL', 'MSFT', 'GOOGL']  # Esempi di ticker per aziende
     api_key = 'pk_Bk503VYEQsGdMJeFjmqxDA'
+    
+    # Convert stock tickers to website domains
+    domains = {company: yf.Ticker(company).info['website'].replace('https://www.', '') for company in companies}  # Remove 'www.'
+
     data = {
         company: {
             'info': yf.Ticker(company).info,
-            'logo_url': get_logo_url(f'{company.lower()}.com', api_key)
+            'logo_url': get_logo_url(domains[company], api_key)  # Use the new domains variable
         } for company in companies
     }
     return render_template('index.html', data=data)
