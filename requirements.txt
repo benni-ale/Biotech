@@ -1,2 +1,4 @@
-Flask
-yfinance 
+flask
+yfinance
+requests
+matplotlib 
