@@ -5,6 +5,8 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 import base64
 
+# Testing Fork for push
+
 # Imposta il backend di Matplotlib su 'Agg' per l'uso non interattivo
 plt.switch_backend('Agg')
 
@@ -52,7 +54,6 @@ def home():
             'info': yf.Ticker(company).info,
             'logo_url': get_logo_url(domains[company], api_key),
             'plot': generate_stock_plot(company),  # Genera grafico per ciascuna azienda
-            'earnings': yf.Ticker(company).info.get('earnings', 0),  # Fetch earnings directly
             'marketCap': format_market_cap(yf.Ticker(company).info.get('marketCap', 0)),  # Format market cap
         } for company in companies
     }
