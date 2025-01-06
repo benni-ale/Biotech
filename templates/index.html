@@ -51,7 +51,7 @@
     <table>
         <thead>
             <tr>
-                <th>Rank</th>
+                <th>Earnings</th>
                 <th>Logo</th>
                 <th>Name</th>
                 <th>Price</th>
@@ -62,11 +62,11 @@
         <tbody id="companyTable">
             {% for symbol, company_data in data.items() %}
                 <tr>
-                    <td>{{ loop.index }}</td>
+                    <td>${{ company_data['info'].get('earnings', 0) | round(0, 'common') }}</td>
                     <td><img src="{{ company_data['logo_url'] }}" alt="{{ symbol }} logo" width="50"></td>
                     <td>{{ company_data['info']['shortName'] }} ({{ symbol }})</td>
                     <td>${{ company_data['info']['currentPrice'] }}</td>
-                    <td>${{ company_data['info']['marketCap'] | round(0, 'common') }}</td>
+                    <td>{{ company_data['marketCap'] }}</td>
                     <td><img src="data:image/png;base64,{{ company_data['plot'] }}" alt="Stock Trend" width="100"></td>
                 </tr>
             {% endfor %}

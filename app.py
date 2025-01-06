@@ -24,6 +24,17 @@ def generate_stock_plot(ticker):
     buf.seek(0)
     return base64.b64encode(buf.getvalue()).decode('utf8')
 
+def format_market_cap(value):
+    """Format market cap to a human-readable string."""
+    if value >= 1_000_000_000_000:
+        return f'${value / 1_000_000_000_000:.3f} T'  # Trillions
+    elif value >= 1_000_000_000:
+        return f'${value / 1_000_000_000:.3f} B'  # Billions
+    elif value >= 1_000_000:
+        return f'${value / 1_000_000:.3f} M'  # Millions
+    else:
+        return f'${value}'  # Less than a million
+
 @app.route('/')
 def home():
     # Elenco di tutte le aziende
@@ -31,13 +42,18 @@ def home():
     api_key = 'pk_Bk503VYEQsGdMJeFjmqxDA'
     
     # Converti i ticker delle azioni in domini web
-    domains = {company: yf.Ticker(company).info['website'].replace('https://www.', '') for company in companies}  # Rimuovi 'www.'
+    domains = {
+        company: yf.Ticker(company).info['website'].replace('https://www.', '') if company != 'GOOG' else 'google.com'
+        for company in companies
+    }  # Rimuovi 'www.' per tutte le aziende tranne Google
 
     data = {
         company: {
             'info': yf.Ticker(company).info,
             'logo_url': get_logo_url(domains[company], api_key),
-            'plot': generate_stock_plot(company)  # Genera grafico per ciascuna azienda
+            'plot': generate_stock_plot(company),  # Genera grafico per ciascuna azienda
+            'earnings': yf.Ticker(company).info.get('earnings', 0),  # Fetch earnings directly
+            'marketCap': format_market_cap(yf.Ticker(company).info.get('marketCap', 0)),  # Format market cap
         } for company in companies
     }
     return render_template('index.html', data=data)
